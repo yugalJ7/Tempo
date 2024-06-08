@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+require("dotenv").config();
 
 // Collection - This is used throughout discord.js rather than Arrays for anything that has an ID, for significantly improved performance and ease-of-use.
 const { Client, Events, Collection, GatewayIntentBits } = require("discord.js");
@@ -7,7 +8,7 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds],
 });
 
-const token = process.env["TOKEN"];
+// const token = process.env["TOKEN"];
 // .commands = to access commands in other files
 client.commands = new Collection();
 
@@ -30,7 +31,7 @@ for (const folder of commandFolder) {
       client.commands.set(command.data.name, command);
     } else {
       console.log(
-        `[Warning] The command at ${filePath} is missing a required "data" or "execute" property.`,
+        `[Warning] The command at ${filePath} is missing a required "data" or "execute" property.`
       );
     }
   }
@@ -72,4 +73,4 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
