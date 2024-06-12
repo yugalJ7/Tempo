@@ -13,20 +13,16 @@ const client = new Client({
 client.commands = new Collection();
 
 const folderPath = path.join(__dirname, "commands");
-console.log("folderPath", folderPath);
 const commandFolder = fs.readdirSync(folderPath);
 
 for (const folder of commandFolder) {
   const commandPath = path.join(folderPath, folder);
-  console.log("commandPath", commandPath);
   const commandFiles = fs
     .readdirSync(commandPath)
     .filter((file) => file.endsWith(".js"));
   for (const file of commandFiles) {
     const filePath = path.join(commandPath, file);
-    console.log("filePath", filePath);
     const command = require(filePath);
-    console.log("command", command);
     if ("data" in command && "execute" in command) {
       client.commands.set(command.data.name, command);
     } else {
@@ -45,8 +41,8 @@ client.once(Events.ClientReady, (readyClient) => {
 
 // below is the event listener for the interactionCreate event that will execute code when application recieves an interaction
 client.on(Events.InteractionCreate, async (interaction) => {
+  //interaction -> gives info about server and member who try to interact with bot
   if (!interaction.isChatInputCommand()) return;
-  console.log("interaction", interaction);
 
   const command = interaction.client.commands.get(interaction.commandName);
 
