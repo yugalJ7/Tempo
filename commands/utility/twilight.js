@@ -3,37 +3,36 @@ const axios = require("axios");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("currentweather")
-    .setDescription("Provide Information about current weather of city")
+    .setName("twilight")
+    .setDescription("Provide Information about sunrise, sunset")
     .addStringOption((option) =>
       option.setName("city").setDescription("Enter city name").setRequired(true)
     ),
   async execute(interaction) {
     const query = interaction.options.getString("city");
+    const currentDate = new Date().toJSON().slice(0, 10);
     const response =
-      await axios.get(`http://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=${query}&aqi=yes
+      await axios.get(`http://api.weatherapi.com/v1/astronomy.json?key=${process.env.WEATHER_API_KEY}&q=${query}&dt=${currentDate}
 `);
-    const weatherInfo = await response.data;
-    console.log(weatherInfo);
-    const { location, current } = weatherInfo;
+    const twilightInfo = await response.data;
+    console.log(twilightInfo);
+    const { location, astronomy } = twilightInfo;
     await interaction.deferReply();
 
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle(`${location.name},${location.country}`)
-      .setDescription(`Weather information in ${query}`)
-      .setThumbnail(`https:${current.condition.icon}`)
+      .setDescription(`Sunrise, Sunset in ${query}`)
       .addFields(
-        { name: "Current Weather", value: `${current.temp_c}°C` },
         {
-          name: "Description",
-          value: `${current.condition.text}`,
+          name: "Sunrise",
+          value: `${astronomy.astro.sunrise}`,
           inline: true,
         },
         { name: "\u200B", value: "\u200B", inline: true },
         {
-          name: `Wind Speed(kph)`,
-          value: `${current.wind_kph}`,
+          name: "Sunset",
+          value: `${astronomy.astro.sunset}`,
           inline: true,
         }
       );
