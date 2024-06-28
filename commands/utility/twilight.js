@@ -22,7 +22,7 @@ module.exports = {
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle(`${location.name},${location.country}`)
-      .setDescription(`Sunrise, Sunset in ${query}`)
+      .setDescription(`Sunrise, Sunset in ${location.name}`)
       .addFields(
         {
           name: "Sunrise",

@@ -21,7 +21,7 @@ module.exports = {
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle(`${location.name},${location.country}`)
-      .setDescription(`Weather information in ${query}`)
+      .setDescription(`Weather information in ${location.name}`)
       .setThumbnail(`https:${current.condition.icon}`)
       .addFields(
         { name: "Current Weather", value: `${current.temp_c}°C` },
